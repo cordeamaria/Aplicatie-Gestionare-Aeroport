@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.PassengerController"
+            prefHeight="600" prefWidth="900">
+
+    <!-- LEFT MENU -->
+    <left>
+        <VBox spacing="10" prefWidth="180" style="-fx-background-color: #f0f0f0;">
+            <padding>
+                <Insets top="10" left="10" bottom="10" right="10"/>
+            </padding>
+            <Label text="PASSENGER MENU" style="-fx-font-weight: bold;"/>
+            <Button text="SEARCH FLIGHT" onAction="#showSearchFlightPane" prefWidth="160"/>
+            <Button text="MY FLIGHTS" onAction="#showMyFlightsPane" prefWidth="160"/>
+            <Button text="MY LUGGAGE" onAction="#showMyLuggagePane" prefWidth="160"/>
+        </VBox>
+    </left>
+
+    <!-- RIGHT PANE -->
+    <center>
+        <StackPane fx:id="rightPane">
+
+            <!-- ================= USER INFO ================= -->
+            <VBox fx:id="userInfoPane" spacing="10" >
+                <padding>
+                    <Insets top="10" left="10" bottom="10" right="10"/>
+                </padding>
+                <Label text="User Information:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="userNameLabel" text="Name: "/>
+                <Label fx:id="userRoleLabel" text="Role: "/>
+            </VBox>
+
+            <!-- ================= SEARCH FLIGHT ================= -->
+            <VBox fx:id="searchFlightPane" spacing="10" visible="false" managed="false">
+                <padding>
+                    <Insets top="10" left="10" bottom="10" right="10"/>
+                </padding>
+
+                <!-- Top button -->
+                <HBox spacing="10">
+                    <Button text="SHOW ALL FLIGHTS" onAction="#showAllFlights"/>
+                </HBox>
+
+                <!-- Flight filters -->
+                <HBox spacing="10">
+                    <TextField fx:id="departureField" promptText="Departure..." prefWidth="150"/>
+                    <TextField fx:id="destinationField" promptText="Destination..." prefWidth="150"/>
+                    <DatePicker fx:id="datePicker" prefWidth="150"/>
+                    <Button text="FILTER" onAction="#handleFilter" style="-fx-background-color: #add8e6;"/>
+                </HBox>
+
+                <!-- Flights Table -->
+                <TableView fx:id="flightTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCode" text="Flight Code" prefWidth="100"/>
+                        <TableColumn fx:id="colDeparture" text="Departure" prefWidth="150"/>
+                        <TableColumn fx:id="colDestination" text="Destination" prefWidth="150"/>
+                        <TableColumn fx:id="colDate" text="Departure Date/Time" prefWidth="180"/>
+                        <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+                    </columns>
+                </TableView>
+
+                <!-- Luggage & Buy Ticket bottom -->
+                <HBox spacing="20" alignment="CENTER_RIGHT">
+                    <CheckBox fx:id="handBagCheck" text="Hand luggage (free)"/>
+                    <CheckBox fx:id="holdBagCheck" text="Hold luggage (+50€)"/>
+                    <Button text="BUY TICKET" fx:id="buyTicketButton" onAction="#handleBuyTicket"/>
+                </HBox>
+            </VBox>
+
+            <!-- ================= MY FLIGHTS ================= -->
+            <VBox fx:id="myFlightsPane" spacing="10" visible="false" managed="false">
+                <padding>
+                    <Insets top="10" left="10" bottom="10" right="10"/>
+                </padding>
+                <Label text="My Flights:" style="-fx-font-weight: bold"/>
+                <TableView fx:id="myFlightsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colFlightCode" text="Flight Code"/>
+                        <TableColumn fx:id="colSeat" text="Seat"/>
+                        <TableColumn fx:id="colClass" text="Class"/>
+                        <TableColumn fx:id="colPrice" text="Price (€)"/>
+                        <TableColumn fx:id="colPurchaseDate" text="Purchase Date"/>
+                        <TableColumn fx:id="colPaymentStatus" text="Payment Status"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- ================= MY LUGGAGE ================= -->
+            <VBox fx:id="myLuggagePane" spacing="10" visible="false" managed="false">
+                <padding>
+                    <Insets top="10" left="10" bottom="10" right="10"/>
+                </padding>
+                <Label text="My Luggage:" style="-fx-font-weight: bold"/>
+                <TableView fx:id="myLuggageTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colBagType" text="Type"/>
+                        <TableColumn fx:id="colWeight" text="Weight"/>
+                        <TableColumn fx:id="colFlightCodeBag" text="Flight Code"/>
+                        <TableColumn fx:id="colStatusCheck" text="Status"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
