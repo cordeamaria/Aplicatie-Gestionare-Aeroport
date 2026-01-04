@@ -5,20 +5,23 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DispatcherController" prefHeight="850" prefWidth="1300">
     <left>
-        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #ffffff;">
+        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #FFF;">
             <padding><Insets top="20" left="10" bottom="20" right="10"/></padding>
-            <Label text="DISPATCHER" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Label text="DISPECERAT" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
             <Button text="ZBORURI" onAction="#showFlightsPane" prefWidth="180"/>
             <Button text="AERONAVE" onAction="#showFleetPane" prefWidth="180"/>
             <Button text="LISTE UTILIZATORI" onAction="#showUsersPane" prefWidth="180"/>
+            <Button text="ASIGNARE ECHIPAJ" onAction="#showCrewPane" prefWidth="180"/>
             <Button text="RAPORTARE" onAction="#showReportPane" prefWidth="180" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="LOGOUT" onAction="#handleLogout" prefWidth="180" style="-fx-background-color: #fd6969; -fx-text-fill: white; -fx-font-weight: bold;"/>
         </VBox>
     </left>
     <center>
         <StackPane>
             <VBox fx:id="userInfoPane" spacing="10">
                 <padding><Insets top="20" left="20" bottom="20" right="20"/></padding>
-                <Label fx:id="userNameLabel" style="-fx-font-size: 18px;"/><Label fx:id="userRoleLabel"/>
+                <Label fx:id="userNameLabel" text="Nume: "/><Label fx:id="userRoleLabel" text="Rol: "/>
             </VBox>
 
             <VBox fx:id="flightsPane" spacing="10" visible="false" managed="false">
@@ -28,19 +31,43 @@
                 </HBox>
                 <TableView fx:id="flightTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colFlightCode" text="Cod"/><TableColumn fx:id="colDep" text="De la"/><TableColumn fx:id="colDest" text="Spre"/>
-                        <TableColumn fx:id="colFlightStatus" text="Status"/><TableColumn fx:id="colEquipment" text="Echipament Sol"/>
-                        <TableColumn fx:id="colCrewCount" text="Echipaj"/><TableColumn fx:id="colPassengerCount" text="Pax"/>
+                        <TableColumn fx:id="colFlightCode" text="Cod"/>
+                        <TableColumn fx:id="colDep" text="Plecare"/>
+                        <TableColumn fx:id="colDest" text="Sosește la"/>
+                        <TableColumn fx:id="colDate" text="Data Plecare" prefWidth="150"/>
+                        <TableColumn fx:id="colArrivalDate" text="Data Sosire" prefWidth="150"/>
+
+                        <TableColumn fx:id="colFlightStatus" text="Stare"/>
+                        <TableColumn fx:id="colEquipment" text="Echipament Sol"/>
+                        <TableColumn fx:id="colCrewCount" text="Echipaj"/>
+                        <TableColumn fx:id="colPassengerCount" text="Pasageri"/>
                     </columns>
                 </TableView>
-                <GridPane hgap="10" vgap="5">
-                    <TextField fx:id="fCodeF" promptText="Cod" GridPane.columnIndex="0"/><TextField fx:id="fDepF" promptText="Plecare" GridPane.columnIndex="1"/>
-                    <TextField fx:id="fDestF" promptText="Spre" GridPane.columnIndex="2"/><ComboBox fx:id="fStatusCombo" promptText="Status" GridPane.columnIndex="3"/>
-                    <TextField fx:id="fEquipmentF" promptText="Echipament" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                    <TextField fx:id="fCrewF" promptText="Nr. Crew" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                    <TextField fx:id="fPaxF" promptText="Nr. Pax" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                    <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnSpan="4">
-                        <Button text="CREATE" onAction="#handleAddFlight" style="-fx-background-color: #2ecc71;"/><Button text="UPDATE" onAction="#handleUpdateFlight" style="-fx-background-color: #3498db;"/><Button text="DELETE" onAction="#handleDeleteFlight" style="-fx-background-color: #e74c3c;"/><Button text="CLEAR" onAction="#clearFlightFields"/>
+
+                <GridPane hgap="10" vgap="10">
+                    <TextField fx:id="fCodeF" promptText="Cod Zbor" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="fDepF" promptText="Oraș Plecare" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <TextField fx:id="fDestF" promptText="Oraș Destinație" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                    <ComboBox fx:id="fStatusCombo" promptText="Stare Zbor" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="150"/>
+
+                    <VBox spacing="2" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Data Plecare:" style="-fx-font-size: 10px;"/>
+                        <DatePicker fx:id="datePicker" prefWidth="150"/>
+                    </VBox>
+                    <VBox spacing="2" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Data Sosire:" style="-fx-font-size: 10px;"/>
+                        <DatePicker fx:id="arrivalDatePicker" prefWidth="150"/>
+                    </VBox>
+                    <TextField fx:id="fCrewF" promptText="Nr. Echipaj" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                    <TextField fx:id="fPaxF" promptText="Nr. Pasageri" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+
+                    <TextField fx:id="fEquipmentF" promptText="Echipamente necesare" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+
+                    <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnSpan="4">
+                        <Button text="CREATE" onAction="#handleAddFlight" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Button text="UPDATE" onAction="#handleUpdateFlight" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Button text="DELETE" onAction="#handleDeleteFlight" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Button text="CLEAR" onAction="#clearFlightFields" style="-fx-font-weight: bold;"/>
                     </HBox>
                 </GridPane>
             </VBox>
@@ -48,38 +75,51 @@
             <VBox fx:id="fleetPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Căutare după Cod: "/><TextField fx:id="searchAirField" onKeyReleased="#handleSearchAir" promptText="Ex: YR-BAZ"/>
+                    <Label text="Căutare Aeronave: "/><TextField fx:id="searchAirField" onKeyReleased="#handleSearchAir" promptText="Ex: YR-BAZ"/>
                 </HBox>
                 <TableView fx:id="fleetTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colAirCode" text="Cod"/><TableColumn fx:id="colAirModel" text="Model"/><TableColumn fx:id="colAirCap" text="Capacitate"/><TableColumn fx:id="colAirStatus" text="Stare"/><TableColumn fx:id="colAirLoc" text="Locatie"/>
+                        <TableColumn fx:id="colAirCode" text="Cod Înmatriculare" /><TableColumn fx:id="colAirModel" text="Model" /><TableColumn fx:id="colAirCap" text="Capacitate" /><TableColumn fx:id="colAirStatus" text="Stare" /><TableColumn fx:id="colAirLoc" text="Locație" />
                     </columns>
                 </TableView>
                 <HBox spacing="5">
-                    <TextField fx:id="airCodeF" promptText="Cod"/><TextField fx:id="airModelF" promptText="Model"/><TextField fx:id="airCapF" promptText="Cap."/><TextField fx:id="airLocF" promptText="Locatie"/><ComboBox fx:id="airStatusCombo" promptText="Stare"/>
+                    <TextField fx:id="airCodeF" promptText="Cod"/><TextField fx:id="airModelF" promptText="Model"/><TextField fx:id="airCapF" promptText="Capacitate"/><TextField fx:id="airLocF" promptText="Locație"/><ComboBox fx:id="airStatusCombo" promptText="Stare"/>
                 </HBox>
                 <HBox spacing="5">
-                    <Button text="CREATE" onAction="#handleAddAircraft" style="-fx-background-color: #2ecc71;"/><Button text="UPDATE" onAction="#handleUpdateAircraft" style="-fx-background-color: #3498db;"/><Button text="DELETE" onAction="#handleDeleteAircraft" style="-fx-background-color: #e74c3c;"/>
+                    <Button text="CREATE" onAction="#handleAddAircraft" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/><Button text="UPDATE" onAction="#handleUpdateAircraft" style="-fx-background-color: #3498db; -fx-text-fill: white;"/><Button text="DELETE" onAction="#handleDeleteAircraft" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
                 </HBox>
             </VBox>
 
             <VBox fx:id="usersPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <ComboBox fx:id="roleFilterCombo" promptText="Selectează Rol"/><Button text="RELOAD" onAction="#handleFilterUsers"/>
+                    <ComboBox fx:id="roleFilterCombo" promptText="Rol"/><Button text="RELOAD" onAction="#handleFilterUsers"/>
                 </HBox>
                 <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colUserId" text="ID"/><TableColumn fx:id="colUserName" text="User"/><TableColumn fx:id="colUserRole" text="Rol"/><TableColumn fx:id="colUserPass" text="Parola"/>
+                        <TableColumn fx:id="colUserId" text="ID"/><TableColumn fx:id="colUserName" text="Utilizator"/><TableColumn fx:id="colUserRole" text="Rol"/><TableColumn fx:id="colUserPass" text="Parolă"/>
                     </columns>
                 </TableView>
             </VBox>
 
+            <VBox fx:id="crewAssignmentPane" spacing="10" visible="false" managed="false">
+                <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
+                <Label text="Asignare Personal Navigant" style="-fx-font-weight: bold;"/>
+                <TableView fx:id="crewTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCrewUserId" text="ID Angajat"/><TableColumn fx:id="colCrewFlightId" text="Cod Zbor"/><TableColumn fx:id="colCrewRole" text="Funcție"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <TextField fx:id="crewUserIdField" promptText="ID Angajat"/><TextField fx:id="crewFlightIdField" promptText="ID Zbor"/><TextField fx:id="crewRoleField" promptText="Funcție"/><Button text="ASIGNEAZĂ" onAction="#handleAddCrewAssignment" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
+
             <VBox fx:id="reportPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <Label text="Sesizare Problemă Tehnică:" style="-fx-font-weight: bold;"/>
+                <Label text="Raportare Problemă Tehnică:" style="-fx-font-weight: bold;"/>
                 <TextArea fx:id="problemArea" promptText="Descrieți problema tehnică aici..."/>
-                <Button text="SUBMIT" onAction="#handleSubmitProblem" prefWidth="100"/>
+                <Button text="TRIMITE" onAction="#handleSubmitProblem" prefWidth="100"/>
             </VBox>
         </StackPane>
     </center>

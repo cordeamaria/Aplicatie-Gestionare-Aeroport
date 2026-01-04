@@ -7,87 +7,90 @@
     <left>
         <VBox spacing="10" prefWidth="180" style="-fx-background-color: #f0f0f0;">
             <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-            <Label text="FIELD WORKER MENU" style="-fx-font-weight: bold;"/>
-            <Button text="TASKURILE MELE" onAction="#showTasksPane" prefWidth="160"/>
-            <Button text="MODIFICA PROBLEME" onAction="#showIssuesPane" prefWidth="160"/>
+            <Label text="MENIU PERSONAL SOL" style="-fx-font-weight: bold;"/>
+            <Button text="SARCINILE MELE" onAction="#showTasksPane" prefWidth="160"/>
+            <Button text="GESTIONARE PROBLEME" onAction="#showIssuesPane" prefWidth="160"/>
             <Button text="TOATE ZBORURILE" onAction="#showAllFlightsPane" prefWidth="160"/>
-            <Button text="AERONAVE" onAction="#showFleetPane" prefWidth="160"/>
+            <Button text="STARE FLOTĂ" onAction="#showFleetPane" prefWidth="160"/>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="LOGOUT" onAction="#handleLogout" prefWidth="180" style="-fx-background-color: #fd6969; -fx-font-weight: bold;"/>
         </VBox>
     </left>
     <center>
         <StackPane fx:id="rightPane">
             <VBox fx:id="userInfoPane" spacing="10">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <Label text="Worker Information:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="userNameLabel" text="Name: "/>
-                <Label fx:id="userRoleLabel" text="Role: "/>
+                <Label text="Informații Angajat:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="userNameLabel" text="Nume: "/>
+                <Label fx:id="userRoleLabel" text="Rol: "/>
             </VBox>
 
             <VBox fx:id="tasksPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <Label text="My Assigned Tasks:" style="-fx-font-weight: bold;"/>
+                <Label text="Sarcini de Lucru Alocate:" style="-fx-font-weight: bold;"/>
                 <TableView fx:id="tasksTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colTaskDesc" text="Description" prefWidth="250"/>
-                        <TableColumn fx:id="colTaskStatus" text="Status" prefWidth="100"/>
-                        <TableColumn fx:id="colTaskAllocated" text="Allocated" prefWidth="150"/>
-                        <TableColumn fx:id="colTaskFinished" text="Finished" prefWidth="150"/>
+                        <TableColumn fx:id="colTaskDesc" text="Descriere" prefWidth="250"/>
+                        <TableColumn fx:id="colTaskStatus" text="Stare" prefWidth="100"/>
+                        <TableColumn fx:id="colTaskAllocated" text="Dată Alocare" prefWidth="150"/>
+                        <TableColumn fx:id="colTaskFinished" text="Dată Finalizare" prefWidth="150"/>
                     </columns>
                 </TableView>
             </VBox>
 
             <VBox fx:id="allFlightsPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <Label text="Technical Flight Details:" style="-fx-font-weight: bold;"/>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Cauta Cod Zbor:"/>
-                    <TextField fx:id="searchFlightField" onKeyReleased="#handleSearchFlights" promptText="Ex: RO332"/>
-                </HBox>
+                <Label text="Detalii Tehnice Zboruri Curente:" style="-fx-font-weight: bold;"/>
                 <TableView fx:id="technicalFlightTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colFlightCode" text="Code" prefWidth="70"/>
-                        <TableColumn fx:id="colDeparture" text="From" prefWidth="100"/>
-                        <TableColumn fx:id="colDestination" text="To" prefWidth="100"/>
-                        <TableColumn fx:id="colDepartureTime" text="Dep. Time" prefWidth="130"/>
-                        <TableColumn fx:id="colArrivalTime" text="Arr. Time" prefWidth="130"/>
-                        <TableColumn fx:id="colFlightStatus" text="Status" prefWidth="100"/>
-                        <TableColumn fx:id="colEquipment" text="Equipment" prefWidth="150"/>
-                        <TableColumn fx:id="colCrewCount" text="Crew" prefWidth="50"/>
-                        <TableColumn fx:id="colPassengerCount" text="Passengers" prefWidth="80"/>
+                        <TableColumn fx:id="colFlightCode" text="Cod Zbor" prefWidth="70"/>
+                        <TableColumn fx:id="colDeparture" text="Origine" prefWidth="100"/>
+                        <TableColumn fx:id="colDestination" text="Destinație" prefWidth="100"/>
+                        <TableColumn fx:id="colDepartureTime" text="Ora Plecare" prefWidth="130"/>
+                        <TableColumn fx:id="colArrivalTime" text="Ora Sosire" prefWidth="130"/>
+                        <TableColumn fx:id="colFlightStatus" text="Stare" prefWidth="100"/>
+                        <TableColumn fx:id="colEquipment" text="Echipament Sol" prefWidth="150"/>
+                        <TableColumn fx:id="colCrewCount" text="Echipaj" prefWidth="50"/>
+                        <TableColumn fx:id="colPassengerCount" text="Pasageri" prefWidth="80"/>
                     </columns>
                 </TableView>
             </VBox>
 
             <VBox fx:id="issuesPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
+                <Label text="Gestionare Sesizări Aeroport:" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Caută Problemă:"/>
+                    <TextField fx:id="searchIssueField" onKeyReleased="#handleSearchIssues" promptText="Căutare după descriere..."/>
+                </HBox>
                 <TableView fx:id="issuesTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colIssueDesc" text="Description" prefWidth="250"/>
-                        <TableColumn fx:id="colIssueStatus" text="Status" prefWidth="100"/>
-                        <TableColumn fx:id="colIssueReported" text="Reported" prefWidth="150"/>
-                        <TableColumn fx:id="colIssueResolved" text="Resolved" prefWidth="150"/>
+                        <TableColumn fx:id="colIssueDesc" text="Descriere Problemă" prefWidth="250"/>
+                        <TableColumn fx:id="colIssueStatus" text="Stare" prefWidth="100"/>
+                        <TableColumn fx:id="colIssueReported" text="Raportată la" prefWidth="150"/>
+                        <TableColumn fx:id="colIssueResolved" text="Rezolvată la" prefWidth="150"/>
                     </columns>
                 </TableView>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <ComboBox fx:id="statusUpdateCombo" promptText="Status" prefWidth="150"/>
+                    <ComboBox fx:id="statusUpdateCombo" promptText="Actualizează Starea" prefWidth="150"/>
                     <Button text="UPDATE STATUS" onAction="#handleUpdateIssueStatus" style="-fx-background-color: #add8e6;"/>
                 </HBox>
             </VBox>
 
             <VBox fx:id="fleetPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <Label text="Aircraft Fleet Status:" style="-fx-font-weight: bold;"/>
+                <Label text="Stare Operațională Flotă:" style="-fx-font-weight: bold;"/>
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Cauta Tail Number:"/>
+                    <Label text="Caută după Cod Înmatriculare:"/>
                     <TextField fx:id="searchAirField" onKeyReleased="#handleSearchAir" promptText="Ex: YR-BAZ"/>
                 </HBox>
                 <TableView fx:id="fleetTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colAirCode" text="Tail #" prefWidth="100"/>
-                        <TableColumn fx:id="colAirModel" text="Model" prefWidth="120"/>
-                        <TableColumn fx:id="colAirCapacity" text="Capacity" prefWidth="80"/>
-                        <TableColumn fx:id="colAirOpStatus" text="Status" prefWidth="120"/>
-                        <TableColumn fx:id="colAirLocation" text="Location" prefWidth="150"/>
+                        <TableColumn fx:id="colAirCode" text="Cod Înmatriculare" prefWidth="100"/>
+                        <TableColumn fx:id="colAirModel" text="Model Aeronavă" prefWidth="120"/>
+                        <TableColumn fx:id="colAirCapacity" text="Capacitate" prefWidth="80"/>
+                        <TableColumn fx:id="colAirOpStatus" text="Stare" prefWidth="120"/>
+                        <TableColumn fx:id="colAirLocation" text="Locație Curentă" prefWidth="150"/>
                     </columns>
                 </TableView>
             </VBox>

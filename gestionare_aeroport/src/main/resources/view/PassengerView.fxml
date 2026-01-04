@@ -6,103 +6,104 @@
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.PassengerController"
-            prefHeight="600" prefWidth="900">
+            prefHeight="650" prefWidth="1100">
 
-    <!-- LEFT MENU -->
     <left>
-        <VBox spacing="10" prefWidth="180" style="-fx-background-color: #f0f0f0;">
+        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #f0f0f0;">
             <padding>
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
-            <Label text="PASSENGER MENU" style="-fx-font-weight: bold;"/>
-            <Button text="SEARCH FLIGHT" onAction="#showSearchFlightPane" prefWidth="160"/>
-            <Button text="MY FLIGHTS" onAction="#showMyFlightsPane" prefWidth="160"/>
-            <Button text="MY LUGGAGE" onAction="#showMyLuggagePane" prefWidth="160"/>
+            <Label text="MENIU PASAGER" style="-fx-font-weight: bold;"/>
+            <Button text="CAUTĂ ZBORURI" onAction="#showSearchFlightPane" prefWidth="180"/>
+            <Button text="ZBORURILE MELE" onAction="#showMyFlightsPane" prefWidth="180"/>
+            <Button text="BAGAJELE MELE" onAction="#showMyLuggagePane" prefWidth="180"/>
+            <Region VBox.vgrow="ALWAYS" /> <Button text="LOGOUT" onAction="#handleLogout" prefWidth="180"
+                                                   style="-fx-background-color: #fd6969; -fx-font-weight: bold;"/>
         </VBox>
     </left>
 
-    <!-- RIGHT PANE -->
     <center>
         <StackPane fx:id="rightPane">
 
-            <!-- ================= USER INFO ================= -->
             <VBox fx:id="userInfoPane" spacing="10" >
                 <padding>
                     <Insets top="10" left="10" bottom="10" right="10"/>
                 </padding>
-                <Label text="User Information:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="userNameLabel" text="Name: "/>
-                <Label fx:id="userRoleLabel" text="Role: "/>
+                <Label text="Informații Utilizator:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="userNameLabel" text="Nume: "/>
+                <Label fx:id="userRoleLabel" text="Rol: "/>
             </VBox>
 
-            <!-- ================= SEARCH FLIGHT ================= -->
             <VBox fx:id="searchFlightPane" spacing="10" visible="false" managed="false">
                 <padding>
                     <Insets top="10" left="10" bottom="10" right="10"/>
                 </padding>
 
-                <!-- Top button -->
                 <HBox spacing="10">
-                    <Button text="SHOW ALL FLIGHTS" onAction="#showAllFlights"/>
+                    <Button text="AFIȘEAZĂ TOATE ZBORURILE" onAction="#showAllFlights"/>
                 </HBox>
 
-                <!-- Flight filters -->
-                <HBox spacing="10">
-                    <TextField fx:id="departureField" promptText="Departure..." prefWidth="150"/>
-                    <TextField fx:id="destinationField" promptText="Destination..." prefWidth="150"/>
-                    <DatePicker fx:id="datePicker" prefWidth="150"/>
-                    <Button text="FILTER" onAction="#handleFilter" style="-fx-background-color: #add8e6;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="departureField" promptText="Plecare din..." prefWidth="140"/>
+                    <TextField fx:id="destinationField" promptText="Destinație..." prefWidth="140"/>
+                    <VBox spacing="2">
+                        <Label text="Data Plecare:" style="-fx-font-size: 9px;"/>
+                        <DatePicker fx:id="datePicker" prefWidth="130"/>
+                    </VBox>
+                    <VBox spacing="2">
+                        <Label text="Data Sosire:" style="-fx-font-size: 9px;"/>
+                        <DatePicker fx:id="arrivalDatePicker" prefWidth="130"/>
+                    </VBox>
+                    <Button text="FILTREAZĂ" onAction="#handleFilter" style="-fx-background-color: #add8e6; -fx-font-weight: bold;"/>
                 </HBox>
 
-                <!-- Flights Table -->
                 <TableView fx:id="flightTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colCode" text="Flight Code" prefWidth="100"/>
-                        <TableColumn fx:id="colDeparture" text="Departure" prefWidth="150"/>
-                        <TableColumn fx:id="colDestination" text="Destination" prefWidth="150"/>
-                        <TableColumn fx:id="colDate" text="Departure Date/Time" prefWidth="180"/>
-                        <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+                        <TableColumn fx:id="colCode" text="Cod Zbor" prefWidth="100"/>
+                        <TableColumn fx:id="colDeparture" text="Plecare" prefWidth="130"/>
+                        <TableColumn fx:id="colDestination" text="Destinație" prefWidth="130"/>
+                        <TableColumn fx:id="colDate" text="Dată/Oră Plecare" prefWidth="170"/>
+                        <TableColumn fx:id="colArrivalDate" text="Dată/Oră Sosire" prefWidth="170"/>
+                        <TableColumn fx:id="colStatus" text="Status" prefWidth="110"/>
                     </columns>
                 </TableView>
 
-                <!-- Luggage & Buy Ticket bottom -->
                 <HBox spacing="20" alignment="CENTER_RIGHT">
-                    <CheckBox fx:id="handBagCheck" text="Hand luggage (free)"/>
-                    <CheckBox fx:id="holdBagCheck" text="Hold luggage (+50€)"/>
-                    <Button text="BUY TICKET" fx:id="buyTicketButton" onAction="#handleBuyTicket"/>
+                    <CheckBox fx:id="handBagCheck" text="Bagaj de mână (Gratuit)"/>
+                    <CheckBox fx:id="holdBagCheck" text="Bagaj de cală (+50€)"/>
+                    <Button text="CUMPĂRĂ BILET" fx:id="buyTicketButton" onAction="#handleBuyTicket"
+                            style="-fx-background-color: #90ee90; -fx-font-weight: bold;"/>
                 </HBox>
             </VBox>
 
-            <!-- ================= MY FLIGHTS ================= -->
             <VBox fx:id="myFlightsPane" spacing="10" visible="false" managed="false">
                 <padding>
                     <Insets top="10" left="10" bottom="10" right="10"/>
                 </padding>
-                <Label text="My Flights:" style="-fx-font-weight: bold"/>
+                <Label text="Biletele mele de zbor:" style="-fx-font-weight: bold"/>
                 <TableView fx:id="myFlightsTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colFlightCode" text="Flight Code"/>
-                        <TableColumn fx:id="colSeat" text="Seat"/>
-                        <TableColumn fx:id="colClass" text="Class"/>
-                        <TableColumn fx:id="colPrice" text="Price (€)"/>
-                        <TableColumn fx:id="colPurchaseDate" text="Purchase Date"/>
-                        <TableColumn fx:id="colPaymentStatus" text="Payment Status"/>
+                        <TableColumn fx:id="colFlightCode" text="Cod Zbor" prefWidth="100"/>
+                        <TableColumn fx:id="colSeat" text="Loc" prefWidth="80"/>
+                        <TableColumn fx:id="colClass" text="Clasă" prefWidth="120"/>
+                        <TableColumn fx:id="colPrice" text="Preț (€)" prefWidth="100"/>
+                        <TableColumn fx:id="colPurchaseDate" text="Data Cumpărării" prefWidth="160"/>
+                        <TableColumn fx:id="colPaymentStatus" text="Status Plată" prefWidth="120"/>
                     </columns>
                 </TableView>
             </VBox>
 
-            <!-- ================= MY LUGGAGE ================= -->
             <VBox fx:id="myLuggagePane" spacing="10" visible="false" managed="false">
                 <padding>
                     <Insets top="10" left="10" bottom="10" right="10"/>
                 </padding>
-                <Label text="My Luggage:" style="-fx-font-weight: bold"/>
+                <Label text="Bagajele mele înregistrate:" style="-fx-font-weight: bold"/>
                 <TableView fx:id="myLuggageTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colBagType" text="Type"/>
-                        <TableColumn fx:id="colWeight" text="Weight"/>
-                        <TableColumn fx:id="colFlightCodeBag" text="Flight Code"/>
-                        <TableColumn fx:id="colStatusCheck" text="Status"/>
+                        <TableColumn fx:id="colBagType" text="Tip Bagaj" prefWidth="120"/>
+                        <TableColumn fx:id="colWeight" text="Greutate (kg)" prefWidth="100"/>
+                        <TableColumn fx:id="colFlightCodeBag" text="Ref. Bilet" prefWidth="120"/>
+                        <TableColumn fx:id="colStatusCheck" text="Status Check-in" prefWidth="150"/>
                     </columns>
                 </TableView>
             </VBox>

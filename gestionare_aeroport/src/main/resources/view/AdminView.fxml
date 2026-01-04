@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController" prefHeight="850" prefWidth="1300">
+    <left>
+        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #FFF;">
+            <padding><Insets top="20" left="10" bottom="20" right="10"/></padding>
+            <Label text="PANOU ADMINISTRATOR" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="GESTIUNE PERSONAL" onAction="#showUserManagement" prefWidth="180"/>
+            <Button text="GESTIUNE FLOTĂ" onAction="#showFleetManagement" prefWidth="180"/>
+            <Button text="GENERARE STATISTICI" onAction="#showStatistics" prefWidth="180" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="LOGOUT" onAction="#handleLogout" prefWidth="180" style="-fx-background-color: #fd6969; -fx-font-weight: bold;"/>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="rightPane">
+            <VBox fx:id="userInfoPane" spacing="10">
+                <padding><Insets top="20" left="20" bottom="20" right="20"/></padding>
+                <Label fx:id="userNameLabel" style="-fx-font-size: 18px;"/><Label fx:id="userRoleLabel"/>
+            </VBox>
+
+            <VBox fx:id="userPane" spacing="10" visible="false" managed="false">
+                <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
+                <Label text="Gestionare Utilizatori (Personal)" style="-fx-font-weight: bold;"/>
+                <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colUserId" text="ID" prefWidth="50"/>
+                        <TableColumn fx:id="colUser" text="Nume Utilizator" prefWidth="150"/>
+                        <TableColumn fx:id="colPass" text="Parolă" prefWidth="150"/>
+                        <TableColumn fx:id="colRole" text="Rol" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <TextField fx:id="usernameField" promptText="Utilizator"/><TextField fx:id="passwordField" promptText="Parolă"/>
+                    <ComboBox fx:id="roleCombo" promptText="Selectează Rol"/>
+                    <Button text="ADD" onAction="#handleAddUser" style="-fx-background-color: #2ecc71;"/>
+                    <Button text="UPDATE" onAction="#handleUpdateUser" style="-fx-background-color: #f1c40f;"/>
+                    <Button text="DELETE" onAction="#handleDeleteUser" style="-fx-background-color: #e74c3c;"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="fleetPane" spacing="10" visible="false" managed="false">
+                <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
+                <Label text="Gestionare Flotă Aeronave" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10"><TextField fx:id="searchAirField" promptText="Caută după Cod Aeronavă" onKeyReleased="#handleSearchAir"/></HBox>
+                <TableView fx:id="fleetTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colAirCode" text="Cod"/><TableColumn fx:id="colAirModel" text="Model"/>
+                        <TableColumn fx:id="colAirCap" text="Capacitate"/><TableColumn fx:id="colAirStatus" text="Stare"/><TableColumn fx:id="colAirLoc" text="Locație"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="5">
+                    <TextField fx:id="airCodeF" promptText="Cod"/><TextField fx:id="airModelF" promptText="Model"/>
+                    <TextField fx:id="airCapF" promptText="Capacitate"/><TextField fx:id="airLocF" promptText="Locație"/>
+                    <ComboBox fx:id="airStatusCombo" promptText="Stare"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Button text="CREATE" onAction="#handleAddAircraft" style="-fx-background-color: #2ecc71;"/>
+                    <Button text="UPDATE" onAction="#handleUpdateAircraft" style="-fx-background-color: #3498db;"/>
+                    <Button text="DELETE" onAction="#handleDeleteAircraft" style="-fx-background-color: #e74c3c;"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="statsPane" spacing="10" visible="false" managed="false">
+                <padding><Insets top="20" left="20" bottom="20" right="20"/></padding>
+                <Label text="Generare Statistici Sistem" style="-fx-font-size: 18px;"/>
+                <Button text="EXPORTĂ RAPORT ZBORURI" prefWidth="200"/>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
