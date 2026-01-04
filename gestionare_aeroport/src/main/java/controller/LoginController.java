@@ -66,6 +66,10 @@ public class LoginController {
                 SceneSwitcher.changeScene(event, "DispecerView.fxml", "Meniu Dispecer", validatedUser);
 
             }
+            else if(validatedUser.getRol().equals("ADMINISTRATOR")) {
+                SceneSwitcher.changeScene(event, "AdminView.fxml", "Meniu Administrator", validatedUser);
+
+            }
             else {
                 showAlert("Eroare", "Rol necunoscut!");
             }
@@ -77,8 +81,19 @@ public class LoginController {
     // ================= VEZI ZBORURI =================
     @FXML
     public void handleViewFlights() {
+        // Obținem datele
         ObservableList<Zbor> allFlights = zborRepository.getAllZboruri();
         flightTable.setItems(allFlights);
+
+        // FACEM TABELUL VIZIBIL
+        // visible(true) îl arată, managed(true) îi spune VBox-ului să îi rezerve spațiu în fereastră
+        flightTable.setVisible(true);
+        flightTable.setManaged(true);
+
+        // Opțional: Ajustăm dimensiunea ferestrei pentru a cuprinde tabelul
+        if (flightTable.getScene() != null) {
+            flightTable.getScene().getWindow().sizeToScene();
+        }
     }
 
     // ================= UTILS =================

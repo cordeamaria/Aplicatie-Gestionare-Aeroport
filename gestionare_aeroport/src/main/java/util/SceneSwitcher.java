@@ -17,7 +17,7 @@ public class SceneSwitcher {
             );
 
 
-            Scene scene = new Scene(loader.load(),800,600);
+            Scene scene = new Scene(loader.load(),1000,600);
             Object controller = loader.getController();
 
             if (controller instanceof UserAware userAware) {

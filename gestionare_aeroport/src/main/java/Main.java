@@ -8,7 +8,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         // Încarcă LoginView.fxml din resurse
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/LoginView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(),400,300);
+        Scene scene = new Scene(fxmlLoader.load(),800,600);
         stage.setTitle("Airport Management - Login");
         stage.setScene(scene);
         stage.show();
