@@ -1,9 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Problema {
-    private Long id_problema;
+public class Problema implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private Long id_user_reporter;
     private String descriere;
     private String status; // noua, in_analiza, rezolvata, inchisa
@@ -12,8 +15,8 @@ public class Problema {
 
     public Problema() {}
 
-    public Problema(Long id_problema, Long id_user_reporter, String descriere, String status, LocalDateTime data_raportare, LocalDateTime data_rezolvare) {
-        this.id_problema = id_problema;
+    public Problema(Integer id_problema, Long id_user_reporter, String descriere, String status, LocalDateTime data_raportare, LocalDateTime data_rezolvare) {
+        this.id = id_problema;
         this.id_user_reporter = id_user_reporter;
         this.descriere = descriere;
         this.status = status;
@@ -24,12 +27,12 @@ public class Problema {
     // Getters și Setters
 
 
-    public Long getId_problema() {
-        return id_problema;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_problema(Long id_problema) {
-        this.id_problema = id_problema;
+    public void setId(Integer id_problema) {
+        this.id = id_problema;
     }
 
     public Long getId_user_reporter() {

@@ -3,7 +3,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FieldWorkerController" prefHeight="600" prefWidth="1100">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="OCSF.client.controller.FieldWorkerController"
+            prefHeight="600" prefWidth="1100">
+
     <left>
         <VBox spacing="10" prefWidth="180" style="-fx-background-color: #f0f0f0;">
             <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>

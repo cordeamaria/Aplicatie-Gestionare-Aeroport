@@ -1,26 +1,30 @@
 package model;
 
-public class User {
-    private Long id_user;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private String username;
     private String parola;
     private String rol; // Pasager, Muncitor, Dispecer, Administrator, Pilot, Stewardesa, Manager
 
     public User() {}
 
-    public User(Long id_user, String username, String parola, String rol) {
-        this.id_user = id_user;
+    public User(Integer id_user, String username, String parola, String rol) {
+        this.id = id_user;
         this.username = username;
         this.parola = parola;
         this.rol = rol;
     }
 
-    public Long getId_user() {
-        return id_user;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_user(Long id_user) {
-        this.id_user = id_user;
+    public void setId(Integer id_user) {
+        this.id = id_user;
     }
 
     public String getUsername() {
