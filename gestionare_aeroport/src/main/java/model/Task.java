@@ -1,8 +1,11 @@
 package model;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Task {
-    private Long id_task;
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private Long id_muncitor;
     private String descriere;
     private String status; // in_asteptare, in_desfasurare, completat, anulat
@@ -11,8 +14,8 @@ public class Task {
 
     public Task() {}
 
-    public Task(Long id_task, Long id_muncitor, String descriere, String status, LocalDateTime data_alocare, LocalDateTime data_finalizare) {
-        this.id_task = id_task;
+    public Task(Integer id_task, Long id_muncitor, String descriere, String status, LocalDateTime data_alocare, LocalDateTime data_finalizare) {
+        this.id = id_task;
         this.id_muncitor = id_muncitor;
         this.descriere = descriere;
         this.status = status;
@@ -23,12 +26,12 @@ public class Task {
     // Getters și Setters
 
 
-    public Long getId_task() {
-        return id_task;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_task(Long id_task) {
-        this.id_task = id_task;
+    public void setId(Integer id_task) {
+        this.id = id_task;
     }
 
     public Long getId_muncitor() {

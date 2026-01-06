@@ -1,17 +1,21 @@
 package model;
 
-public class Aeronava {
-    private Long id_aeronava;
+import java.io.Serializable;
+
+public class Aeronava implements Serializable{
+    private Integer id;
     private String cod_aeronava;
     private String model;
     private Integer capacitate;
     private String stare_operationala; // activ, in_mentenanta, retras
     private String locatie_curenta;
 
+    private static final long serialVersionUID = 1L;
+
     public Aeronava() {}
 
-    public Aeronava(Long id_aeronava, String cod_aeronava, String model, Integer capacitate, String stare_operationala, String locatie_curenta) {
-        this.id_aeronava = id_aeronava;
+    public Aeronava(Integer id_aeronava, String cod_aeronava, String model, Integer capacitate, String stare_operationala, String locatie_curenta) {
+        this.id = id_aeronava;
         this.cod_aeronava = cod_aeronava;
         this.model = model;
         this.capacitate = capacitate;
@@ -21,12 +25,12 @@ public class Aeronava {
 
     // Getters și Setters
 
-    public Long getId_aeronava() {
-        return id_aeronava;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_aeronava(Long id_aeronava) {
-        this.id_aeronava = id_aeronava;
+    public void setId(Integer id_aeronava) {
+        this.id = id_aeronava;
     }
 
     public String getCod_aeronava() {

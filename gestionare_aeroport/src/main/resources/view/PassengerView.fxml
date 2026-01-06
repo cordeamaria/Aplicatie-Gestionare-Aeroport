@@ -5,7 +5,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.PassengerController"
+            fx:controller="OCSF.client.controller.PassengerController"
             prefHeight="650" prefWidth="1100">
 
     <left>

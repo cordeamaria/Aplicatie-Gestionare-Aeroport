@@ -1,4 +1,4 @@
-package controller;
+package OCSF.client.controller;
 
 import model.User;
 

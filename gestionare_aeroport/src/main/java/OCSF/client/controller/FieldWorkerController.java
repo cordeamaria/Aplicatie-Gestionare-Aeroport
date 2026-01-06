@@ -1,46 +1,45 @@
-package controller;
+package OCSF.client.controller;
 
+import OCSF.client.networking.AirportClient;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import model.*;
-import repository.*;
 import util.SceneSwitcher;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FieldWorkerController implements UserAware {
     @FXML private VBox userInfoPane, tasksPane, allFlightsPane, fleetPane, issuesPane;
     @FXML private Label userNameLabel, userRoleLabel;
 
-    // Search Fields conform diagramei Use Case
-    @FXML private TextField searchIssueField;
-    @FXML private TextField searchAirField;
+    @FXML private TextField searchIssueField, searchAirField;
 
+    // Tasks Table
     @FXML private TableView<Task> tasksTable;
     @FXML private TableColumn<Task, String> colTaskDesc, colTaskStatus;
     @FXML private TableColumn<Task, LocalDateTime> colTaskAllocated, colTaskFinished;
 
+    // Flights Table
     @FXML private TableView<Zbor> technicalFlightTable;
     @FXML private TableColumn<Zbor, String> colFlightCode, colDeparture, colDestination, colFlightStatus, colEquipment;
     @FXML private TableColumn<Zbor, LocalDateTime> colDepartureTime, colArrivalTime;
     @FXML private TableColumn<Zbor, Integer> colCrewCount, colPassengerCount;
 
+    // Fleet Table
     @FXML private TableView<Aeronava> fleetTable;
     @FXML private TableColumn<Aeronava, String> colAirCode, colAirModel, colAirOpStatus, colAirLocation;
     @FXML private TableColumn<Aeronava, Integer> colAirCapacity;
 
+    // Issues Table
     @FXML private TableView<Problema> issuesTable;
     @FXML private TableColumn<Problema, String> colIssueDesc, colIssueStatus;
     @FXML private TableColumn<Problema, LocalDateTime> colIssueReported, colIssueResolved;
     @FXML private ComboBox<String> statusUpdateCombo;
 
-    private final TaskRepository taskRepository = new TaskRepository();
-    private final ZborRepository zborRepository = new ZborRepository();
-    private final AeronavaRepository aeronavaRepository = new AeronavaRepository();
-    private final ProblemaRepository problemaRepository = new ProblemaRepository();
     private User loggedUser;
 
     @FXML
@@ -52,13 +51,13 @@ public class FieldWorkerController implements UserAware {
     }
 
     private void setupTableColumns() {
-        // Mapare Task-uri (Vizualizare taskurile personale)
+        // Task Mappings
         colTaskDesc.setCellValueFactory(new PropertyValueFactory<>("descriere"));
         colTaskStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colTaskAllocated.setCellValueFactory(new PropertyValueFactory<>("data_alocare"));
         colTaskFinished.setCellValueFactory(new PropertyValueFactory<>("data_finalizare"));
 
-        // Mapare Zboruri (Vizualizare tehnica)
+        // Flight Mappings
         colFlightCode.setCellValueFactory(new PropertyValueFactory<>("cod_zbor"));
         colDeparture.setCellValueFactory(new PropertyValueFactory<>("plecare_din"));
         colDestination.setCellValueFactory(new PropertyValueFactory<>("destinatie"));
@@ -69,66 +68,83 @@ public class FieldWorkerController implements UserAware {
         colCrewCount.setCellValueFactory(new PropertyValueFactory<>("nr_echipaj_bord"));
         colPassengerCount.setCellValueFactory(new PropertyValueFactory<>("nr_pasageri_estimat"));
 
-        // Mapare Aeronave (Vizualizare aeronave)
+        // Fleet Mappings
         colAirCode.setCellValueFactory(new PropertyValueFactory<>("cod_aeronava"));
         colAirModel.setCellValueFactory(new PropertyValueFactory<>("model"));
         colAirCapacity.setCellValueFactory(new PropertyValueFactory<>("capacitate"));
         colAirOpStatus.setCellValueFactory(new PropertyValueFactory<>("stare_operationala"));
         colAirLocation.setCellValueFactory(new PropertyValueFactory<>("locatie_curenta"));
 
-        // Mapare Probleme (Vizualizare probleme)
+        // Issue Mappings
         colIssueDesc.setCellValueFactory(new PropertyValueFactory<>("descriere"));
         colIssueStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colIssueReported.setCellValueFactory(new PropertyValueFactory<>("data_raportare"));
         colIssueResolved.setCellValueFactory(new PropertyValueFactory<>("data_rezolvare"));
     }
 
-    // ================= FUNCTII DE CAUTARE =================
-
-    @FXML
-    public void handleSearchIssues() {
-        String filter = searchIssueField.getText().toLowerCase();
-        // Căutare probleme conform diagramei
-        issuesTable.setItems(problemaRepository.getAllProbleme().filtered(p ->
-                p.getDescriere().toLowerCase().contains(filter)
-        ));
-    }
-
-    @FXML
-    public void handleSearchAir() {
-        String filter = searchAirField.getText().toLowerCase();
-        // Căutare aeronave conform diagramei
-        fleetTable.setItems(aeronavaRepository.getAllAeronave().filtered(a ->
-                a.getCod_aeronava().toLowerCase().contains(filter)
-        ));
-    }
-
-    // ================= LOGICA NAVIGARE =================
-
     @Override
     public void setLoggedUser(User user) {
         this.loggedUser = user;
         userNameLabel.setText(user.getUsername());
-        userRoleLabel.setText( user.getRol());
+        userRoleLabel.setText(user.getRol());
     }
 
-    @FXML public void showTasksPane() { hideAllPanels(); tasksPane.setVisible(true); tasksPane.setManaged(true); tasksTable.setItems(taskRepository.getTasksByWorkerId(loggedUser.getId_user())); }
-    @FXML public void showAllFlightsPane() { hideAllPanels(); allFlightsPane.setVisible(true); allFlightsPane.setManaged(true); technicalFlightTable.setItems(zborRepository.getAllZboruri()); }
-    @FXML public void showFleetPane() { hideAllPanels(); fleetPane.setVisible(true); fleetPane.setManaged(true); fleetTable.setItems(aeronavaRepository.getAllAeronave()); }
-    @FXML public void showIssuesPane() { hideAllPanels(); issuesPane.setVisible(true); issuesPane.setManaged(true); issuesTable.setItems(problemaRepository.getAllProbleme()); }
+    // --- NAVIGATION ---
+    @FXML public void showTasksPane() {
+        hideAllPanels(); tasksPane.setVisible(true); tasksPane.setManaged(true);
+        // Request tasks by User ID
+        List<Task> list = (List<Task>) AirportClient.getInstance().sendRequest("GET_MY_TASKS", loggedUser.getId());
+        if(list != null) tasksTable.setItems(FXCollections.observableArrayList(list));
+    }
 
+    @FXML public void showAllFlightsPane() {
+        hideAllPanels(); allFlightsPane.setVisible(true); allFlightsPane.setManaged(true);
+        List<Zbor> list = (List<Zbor>) AirportClient.getInstance().sendRequest("GET_ALL_FLIGHTS", null);
+        if(list != null) technicalFlightTable.setItems(FXCollections.observableArrayList(list));
+    }
+
+    @FXML public void showFleetPane() {
+        hideAllPanels(); fleetPane.setVisible(true); fleetPane.setManaged(true);
+        List<Aeronava> list = (List<Aeronava>) AirportClient.getInstance().sendRequest("GET_ALL_PLANES", null);
+        if(list != null) fleetTable.setItems(FXCollections.observableArrayList(list));
+    }
+
+    @FXML public void showIssuesPane() {
+        hideAllPanels(); issuesPane.setVisible(true); issuesPane.setManaged(true);
+        List<Problema> list = (List<Problema>) AirportClient.getInstance().sendRequest("GET_ALL_ISSUES", null);
+        if(list != null) issuesTable.setItems(FXCollections.observableArrayList(list));
+    }
+
+    // --- ACTIONS ---
     @FXML
     public void handleUpdateIssueStatus() {
         Problema selected = issuesTable.getSelectionModel().getSelectedItem();
         String newStatus = statusUpdateCombo.getValue();
         if (selected == null || newStatus == null) return;
+
         selected.setStatus(newStatus);
-        if (newStatus.equals("rezolvata") || newStatus.equals("inchisa")) selected.setData_rezolvare(LocalDateTime.now());
-        // Modificare status problema conform diagramei
-        problemaRepository.updateStatus(selected);
+        if (newStatus.equals("rezolvata") || newStatus.equals("inchisa")) {
+            selected.setData_rezolvare(LocalDateTime.now());
+        }
+
+        AirportClient.getInstance().sendRequest("UPDATE_ISSUE", selected);
         issuesTable.refresh();
     }
 
+    // Search Handlers
+    @FXML public void handleSearchIssues() {
+        List<Problema> list = (List<Problema>) AirportClient.getInstance().sendRequest("GET_ALL_ISSUES", null);
+        if (list == null) return;
+        String filter = searchIssueField.getText().toLowerCase();
+        issuesTable.setItems(FXCollections.observableArrayList(list).filtered(p -> p.getDescriere().toLowerCase().contains(filter)));
+    }
+
+    @FXML public void handleSearchAir() {
+        List<Aeronava> list = (List<Aeronava>) AirportClient.getInstance().sendRequest("GET_ALL_PLANES", null);
+        if (list == null) return;
+        String filter = searchAirField.getText().toLowerCase();
+        fleetTable.setItems(FXCollections.observableArrayList(list).filtered(a -> a.getCod_aeronava().toLowerCase().contains(filter)));
+    }
 
     private void hideAllPanels() {
         tasksPane.setVisible(false); tasksPane.setManaged(false);
@@ -137,19 +153,6 @@ public class FieldWorkerController implements UserAware {
         issuesPane.setVisible(false); issuesPane.setManaged(false);
         userInfoPane.setVisible(false);
     }
-    private void showAlert(String t, String c) { Alert a = new Alert(Alert.AlertType.INFORMATION); a.setTitle(t); a.setContentText(c); a.show(); }
 
-    public void handleLogout(ActionEvent event) {
-        try {
-            // Opțional: Aici poți șterge datele utilizatorului logat dacă ai un manager de sesiune
-            this.loggedUser = null;
-
-            // Redirecționare către pagina de login
-            SceneSwitcher.changeScene(event, "LoginView.fxml", "Autentificare Aeroport", null);
-
-        } catch(Exception e){
-            e.printStackTrace();
-            showAlert("Eroare", "Nu s-a putut efectua deconectarea!");
-        }
-    }
+    public void handleLogout(ActionEvent event) { try { this.loggedUser = null; SceneSwitcher.changeScene(event, "LoginView.fxml", "Autentificare Aeroport", null); } catch(Exception e){} }
 }
