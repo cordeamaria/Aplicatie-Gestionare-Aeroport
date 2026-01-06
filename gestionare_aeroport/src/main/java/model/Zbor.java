@@ -1,9 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Zbor {
-    private Long id_zbor;
+public class Zbor implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private String cod_zbor;
     private Long id_aeronava;
     private String plecare_din;
@@ -17,10 +20,10 @@ public class Zbor {
 
     public Zbor() {}
 
-    public Zbor(Long id_zbor, String cod_zbor, Long id_aeronava, String plecare_din, String destinatie,
+    public Zbor(Integer id_zbor, String cod_zbor, Long id_aeronava, String plecare_din, String destinatie,
                 LocalDateTime data_plecare, LocalDateTime data_sosire, String status_zbor,
                 String echipamente_sol, Integer nr_echipaj_bord, Integer nr_pasageri_estimat) {
-        this.id_zbor = id_zbor;
+        this.id = id_zbor;
         this.cod_zbor = cod_zbor;
         this.id_aeronava = id_aeronava;
         this.plecare_din = plecare_din;
@@ -34,8 +37,8 @@ public class Zbor {
     }
 
     // Getters și Setters
-    public Long getId_zbor() { return id_zbor; }
-    public void setId_zbor(Long id_zbor) { this.id_zbor = id_zbor; }
+    public Integer getId() { return id; }
+    public void setId(Integer id_zbor) { this.id = id_zbor; }
     public String getCod_zbor() { return cod_zbor; }
     public void setCod_zbor(String cod_zbor) { this.cod_zbor = cod_zbor; }
     public Long getId_aeronava() { return id_aeronava; }

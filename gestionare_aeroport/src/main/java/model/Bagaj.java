@@ -1,17 +1,22 @@
 package model;
 
-public class Bagaj {
-    private Long id_bagaj;
+import java.io.Serializable;
+
+public class Bagaj implements Serializable{
+    private Integer id;
     private Long id_bilet;
     private Double greutate;
     private String tip; // mana, cala
     private String status_checkin; // nepredat, predat, incarcat, livrat, pierdut
     private String eticheta;
+    private String flightCodeForBagCached;
+
+    private static final long serialVersionUID = 1L;
 
     public Bagaj() {}
 
-    public Bagaj(Long id_bagaj, Long id_bilet, Double greutate, String tip, String status_checkin, String eticheta) {
-        this.id_bagaj = id_bagaj;
+    public Bagaj(Integer id_bagaj, Long id_bilet, Double greutate, String tip, String status_checkin, String eticheta) {
+        this.id = id_bagaj;
         this.id_bilet = id_bilet;
         this.greutate = greutate;
         this.tip = tip;
@@ -22,12 +27,12 @@ public class Bagaj {
     // Getters și Setters
 
 
-    public Long getId_bagaj() {
-        return id_bagaj;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_bagaj(Long id_bagaj) {
-        this.id_bagaj = id_bagaj;
+    public void setId(Integer id_bagaj) {
+        this.id = id_bagaj;
     }
 
     public Long getId_bilet() {
@@ -68,5 +73,15 @@ public class Bagaj {
 
     public void setEticheta(String eticheta) {
         this.eticheta = eticheta;
+    }
+
+    public String getFlightCodeBag() {
+        if (flightCodeForBagCached != null) return flightCodeForBagCached;
+        return "Ticket: " + id_bilet; // Fallback
+    }
+
+    // The Setter simply sets the cached variable
+    public void setFlightCodeForBag(String s) {
+        this.flightCodeForBagCached = s;
     }
 }

@@ -1,15 +1,19 @@
 package model;
 
-public class CrewAssignment {
-    private Long id_assignment;
+import java.io.Serializable;
+
+public class CrewAssignment implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Integer id;
     private Long id_user;
     private Long id_zbor;
     private String rol_in_zbor; // ex: Pilot, Copilot, Stewardesa
 
     public CrewAssignment() {}
 
-    public CrewAssignment(Long id_assignment, Long id_user, Long id_zbor, String rol_in_zbor) {
-        this.id_assignment = id_assignment;
+    public CrewAssignment(Integer id_assignment, Long id_user, Long id_zbor, String rol_in_zbor) {
+        this.id = id_assignment;
         this.id_user = id_user;
         this.id_zbor = id_zbor;
         this.rol_in_zbor = rol_in_zbor;
@@ -18,12 +22,12 @@ public class CrewAssignment {
     // Getters și Setters
 
 
-    public Long getId_assignment() {
-        return id_assignment;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId_assignment(Long id_assignment) {
-        this.id_assignment = id_assignment;
+    public void setId(Integer id_assignment) {
+        this.id = id_assignment;
     }
 
     public Long getId_user() {
