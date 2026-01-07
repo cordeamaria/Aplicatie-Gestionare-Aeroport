@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class DispatcherController implements UserAware {
-    @FXML private VBox userInfoPane, flightsPane, fleetPane, usersPane, reportPane, crewAssignmentPane;
+    @FXML private VBox userInfoPane, flightsPane, usersPane, reportPane, crewAssignmentPane;
     @FXML private Label userNameLabel, userRoleLabel;
 
     // Search Fields
@@ -35,14 +35,6 @@ public class DispatcherController implements UserAware {
     @FXML private DatePicker datePicker;       // Added for Departure Date
     @FXML private DatePicker arrivalDatePicker; // Added for Arrival Date
 
-    // Fleet Table
-    @FXML private TableView<Aeronava> fleetTable;
-    @FXML private TableColumn<Aeronava, String> colAirCode, colAirModel, colAirStatus, colAirLoc;
-    @FXML private TableColumn<Aeronava, Integer> colAirCap;
-
-    // Fleet Inputs
-    @FXML private TextField airCodeF, airModelF, airCapF, airLocF;
-    @FXML private ComboBox<String> airStatusCombo;
 
     // Crew Table
     @FXML private TableView<CrewAssignment> crewTable;
@@ -66,7 +58,7 @@ public class DispatcherController implements UserAware {
         setupColumns();
 
         fStatusCombo.getItems().addAll("programat", "imbarcare", "decolat", "in_cursa", "aterizat", "anulat");
-        airStatusCombo.getItems().addAll("activ", "in_mentenanta", "retras");
+       // airStatusCombo.getItems().addAll("activ", "in_mentenanta", "retras");
         roleFilterCombo.getItems().addAll("Pasager", "Muncitor", "Dispecer", "Administrator", "Pilot", "Stewardesa");
 
         // Flight Selection Listener
@@ -74,10 +66,7 @@ public class DispatcherController implements UserAware {
             if (newV != null) populateFlightFields(newV);
         });
 
-        // Aircraft Selection Listener
-        fleetTable.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
-            if (newV != null) populateAirFields(newV);
-        });
+
 
         hideAll();
         userInfoPane.setVisible(true);
@@ -95,12 +84,7 @@ public class DispatcherController implements UserAware {
         colCrewCount.setCellValueFactory(new PropertyValueFactory<>("nr_echipaj_bord"));
         colPassengerCount.setCellValueFactory(new PropertyValueFactory<>("nr_pasageri_estimat"));
 
-        // Fleet Mappings
-        colAirCode.setCellValueFactory(new PropertyValueFactory<>("cod_aeronava"));
-        colAirModel.setCellValueFactory(new PropertyValueFactory<>("model"));
-        colAirCap.setCellValueFactory(new PropertyValueFactory<>("capacitate"));
-        colAirStatus.setCellValueFactory(new PropertyValueFactory<>("stare_operationala"));
-        colAirLoc.setCellValueFactory(new PropertyValueFactory<>("locatie_curenta"));
+
 
         // User Mappings
         colUserId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -127,10 +111,7 @@ public class DispatcherController implements UserAware {
         refreshFlights();
     }
 
-    @FXML public void showFleetPane() {
-        hideAll(); fleetPane.setVisible(true); fleetPane.setManaged(true);
-        refreshFleet();
-    }
+
 
     @FXML public void showUsersPane() {
         hideAll(); usersPane.setVisible(true); usersPane.setManaged(true);
@@ -210,46 +191,12 @@ public class DispatcherController implements UserAware {
 
     // --- AIRCRAFT OPERATIONS (ADDED) ---
 
-    @FXML public void handleSearchAir() {
-        List<Aeronava> list = (List<Aeronava>) AirportClient.getInstance().sendRequest("GET_ALL_PLANES", null);
-        if (list != null) {
-            String filter = searchAirField.getText().toLowerCase();
-            fleetTable.setItems(FXCollections.observableArrayList(list)
-                    .filtered(a -> a.getCod_aeronava().toLowerCase().contains(filter)));
-        }
-    }
 
-    @FXML public void handleAddAircraft() {
-        try {
-            Aeronava a = new Aeronava(0, airCodeF.getText(), airModelF.getText(),
-                    Integer.parseInt(airCapF.getText()), airStatusCombo.getValue(), airLocF.getText());
-            AirportClient.getInstance().sendRequest("ADD_PLANE", a);
-            refreshFleet();
-        } catch (NumberFormatException e) { showAlert("Eroare", "Capacitatea trebuie să fie număr!"); }
-    }
 
-    @FXML public void handleUpdateAircraft() {
-        Aeronava selected = fleetTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            try {
-                selected.setCod_aeronava(airCodeF.getText());
-                selected.setModel(airModelF.getText());
-                selected.setCapacitate(Integer.parseInt(airCapF.getText()));
-                selected.setStare_operationala(airStatusCombo.getValue());
-                selected.setLocatie_curenta(airLocF.getText());
-                AirportClient.getInstance().sendRequest("UPDATE_PLANE", selected);
-                refreshFleet();
-            } catch (Exception e) { showAlert("Eroare", "Date invalide!"); }
-        }
-    }
 
-    @FXML public void handleDeleteAircraft() {
-        Aeronava selected = fleetTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            AirportClient.getInstance().sendRequest("DELETE_PLANE", selected.getId());
-            refreshFleet();
-        }
-    }
+
+
+
 
     // --- USER FILTER (ADDED) ---
 
@@ -296,10 +243,7 @@ public class DispatcherController implements UserAware {
         if(list != null) flightTable.setItems(FXCollections.observableArrayList(list));
     }
 
-    private void refreshFleet() {
-        List<Aeronava> list = (List<Aeronava>) AirportClient.getInstance().sendRequest("GET_ALL_PLANES", null);
-        if(list != null) fleetTable.setItems(FXCollections.observableArrayList(list));
-    }
+
 
     private void refreshUsers() {
         List<User> list = (List<User>) AirportClient.getInstance().sendRequest("GET_ALL_USERS", null);
@@ -321,18 +265,9 @@ public class DispatcherController implements UserAware {
         if (z.getData_sosire() != null && arrivalDatePicker != null) arrivalDatePicker.setValue(z.getData_sosire().toLocalDate());
     }
 
-    // Added helper to populate aircraft text fields
-    private void populateAirFields(Aeronava a) {
-        airCodeF.setText(a.getCod_aeronava());
-        airModelF.setText(a.getModel());
-        airCapF.setText(String.valueOf(a.getCapacitate()));
-        airStatusCombo.setValue(a.getStare_operationala());
-        airLocF.setText(a.getLocatie_curenta());
-    }
 
     private void hideAll() {
         flightsPane.setVisible(false); flightsPane.setManaged(false);
-        fleetPane.setVisible(false); fleetPane.setManaged(false);
         usersPane.setVisible(false); usersPane.setManaged(false);
         reportPane.setVisible(false); reportPane.setManaged(false);
         crewAssignmentPane.setVisible(false); crewAssignmentPane.setManaged(false);

@@ -21,8 +21,7 @@ public class ConnectionFactory {
 //    private static final String DBURL = "jdbc:mysql://localhost:3306/storedb";
     private static final String DBURL = "jdbc:mysql://localhost:3306/gestionare_aeroport?allowPublicKeyRetrieval=true&useSSL=false";
     private static final String USER = "root";
-    private static final String PASS = "root";
-
+    private static final String PASS = "parola";
     private static ConnectionFactory singleInstance = new ConnectionFactory();
 
     /**
