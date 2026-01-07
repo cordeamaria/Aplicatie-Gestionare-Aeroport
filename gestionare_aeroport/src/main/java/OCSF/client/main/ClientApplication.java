@@ -18,7 +18,7 @@ public class ClientApplication extends Application {
 
         Parent root = loader.load();
         primaryStage.setTitle("Autentificare Aeroport");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root,600,600));
         primaryStage.show();
     }
 

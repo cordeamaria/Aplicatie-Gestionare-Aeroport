@@ -9,7 +9,6 @@
             <padding><Insets top="20" left="10" bottom="20" right="10"/></padding>
             <Label text="DISPECERAT" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
             <Button text="ZBORURI" onAction="#showFlightsPane" prefWidth="180"/>
-            <Button text="AERONAVE" onAction="#showFleetPane" prefWidth="180"/>
             <Button text="LISTE UTILIZATORI" onAction="#showUsersPane" prefWidth="180"/>
             <Button text="ASIGNARE ECHIPAJ" onAction="#showCrewPane" prefWidth="180"/>
             <Button text="RAPORTARE" onAction="#showReportPane" prefWidth="180" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
@@ -72,23 +71,6 @@
                 </GridPane>
             </VBox>
 
-            <VBox fx:id="fleetPane" spacing="10" visible="false" managed="false">
-                <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="Căutare Aeronave: "/><TextField fx:id="searchAirField" onKeyReleased="#handleSearchAir" promptText="Ex: YR-BAZ"/>
-                </HBox>
-                <TableView fx:id="fleetTable" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colAirCode" text="Cod Înmatriculare" /><TableColumn fx:id="colAirModel" text="Model" /><TableColumn fx:id="colAirCap" text="Capacitate" /><TableColumn fx:id="colAirStatus" text="Stare" /><TableColumn fx:id="colAirLoc" text="Locație" />
-                    </columns>
-                </TableView>
-                <HBox spacing="5">
-                    <TextField fx:id="airCodeF" promptText="Cod"/><TextField fx:id="airModelF" promptText="Model"/><TextField fx:id="airCapF" promptText="Capacitate"/><TextField fx:id="airLocF" promptText="Locație"/><ComboBox fx:id="airStatusCombo" promptText="Stare"/>
-                </HBox>
-                <HBox spacing="5">
-                    <Button text="CREATE" onAction="#handleAddAircraft" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/><Button text="UPDATE" onAction="#handleUpdateAircraft" style="-fx-background-color: #3498db; -fx-text-fill: white;"/><Button text="DELETE" onAction="#handleDeleteAircraft" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-                </HBox>
-            </VBox>
 
             <VBox fx:id="usersPane" spacing="10" visible="false" managed="false">
                 <padding><Insets top="10" left="10" bottom="10" right="10"/></padding>
