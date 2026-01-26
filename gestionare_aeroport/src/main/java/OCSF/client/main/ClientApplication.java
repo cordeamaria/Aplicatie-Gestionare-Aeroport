@@ -14,7 +14,6 @@ public class ClientApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         // We load the Login View first
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginView.fxml"));
-        // Make sure your FXML files are in 'src/resources/view' or adjust path accordingly
 
         Parent root = loader.load();
         primaryStage.setTitle("Autentificare Aeroport");

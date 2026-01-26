@@ -7,7 +7,7 @@ public class Aeronava implements Serializable{
     private String cod_aeronava;
     private String model;
     private Integer capacitate;
-    private String stare_operationala; // activ, in_mentenanta, retras
+    private String stare_operationala;
     private String locatie_curenta;
 
     private static final long serialVersionUID = 1L;

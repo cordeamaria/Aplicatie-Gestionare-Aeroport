@@ -8,7 +8,7 @@ public class CrewAssignment implements Serializable {
     private Integer id;
     private Long id_user;
     private Long id_zbor;
-    private String rol_in_zbor; // ex: Pilot, Copilot, Stewardesa
+    private String rol_in_zbor;
 
     public CrewAssignment() {}
 

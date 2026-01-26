@@ -6,8 +6,8 @@ public class Bagaj implements Serializable{
     private Integer id;
     private Long id_bilet;
     private Double greutate;
-    private String tip; // mana, cala
-    private String status_checkin; // nepredat, predat, incarcat, livrat, pierdut
+    private String tip;
+    private String status_checkin;
     private String eticheta;
     private String flightCodeForBagCached;
 
@@ -80,7 +80,6 @@ public class Bagaj implements Serializable{
         return "Ticket: " + id_bilet; // Fallback
     }
 
-    // The Setter simply sets the cached variable
     public void setFlightCodeForBag(String s) {
         this.flightCodeForBagCached = s;
     }

@@ -122,45 +122,7 @@ public class AbstractDAO<T> {
      * @param resultSet the ResultSet returned by a query
      * @return a list of mapped objects of type T
      */
-//    private List<T> createObjects(ResultSet resultSet) {
-//        List<T> list = new ArrayList<T>();
-//        Constructor[] ctors = type.getDeclaredConstructors();
-//        Constructor ctor = null;
-//        for (int i = 0; i < ctors.length; i++) {
-//            ctor = ctors[i];
-//            if (ctor.getGenericParameterTypes().length == 0)
-//                break;
-//        }
-//        try {
-//            while (resultSet.next()) {
-//                ctor.setAccessible(true);
-//                T instance = (T) ctor.newInstance();
-//                for (Field field : type.getDeclaredFields()) {
-//                    String fieldName = field.getName();
-//                    Object value = resultSet.getObject(fieldName);
-//                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, type);
-//                    Method method = propertyDescriptor.getWriteMethod();
-//                    method.invoke(instance, value);
-//                }
-//                list.add(instance);
-//            }
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (SecurityException e) {
-//            e.printStackTrace();
-//        } catch (IllegalArgumentException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } catch (IntrospectionException e) {
-//            e.printStackTrace();
-//        }
-//        return list;
-//    }
+
     private List<T> createObjects(ResultSet resultSet) {
         List<T> list = new ArrayList<T>();
         Constructor[] ctors = type.getDeclaredConstructors();
@@ -175,32 +137,13 @@ public class AbstractDAO<T> {
                 ctor.setAccessible(true);
                 T instance = (T) ctor.newInstance();
 
-                // === MODIFIED LOOP STARTS HERE ===
-//                for (Field field : type.getDeclaredFields()) {
-//
-//                    // 1. SKIP STATIC/FINAL FIELDS (like serialVersionUID)
-//                    if (Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers())) {
-//                        continue;
-//                    }
-//
-//                    String fieldName = field.getName();
-//
-//                    // ... the rest of your existing code ...
-//                    Object value = resultSet.getObject(fieldName);
-//                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, type);
-//                    Method method = propertyDescriptor.getWriteMethod();
-//                    method.invoke(instance, value);
-//                }
+
 
                 for (Field field : type.getDeclaredFields()) {
-                    // 1. SKIP STATIC/FINAL FIELDS
-//                    if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
-//                            java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
-//                        continue;
-//                    }
+
                     if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
                             java.lang.reflect.Modifier.isFinal(field.getModifiers()) ||
-                            field.getName().endsWith("Cached")) { // <--- ADD THIS LINE
+                            field.getName().endsWith("Cached")) {
                         continue;
                     }
 
@@ -209,11 +152,9 @@ public class AbstractDAO<T> {
                     PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, type);
                     Method method = propertyDescriptor.getWriteMethod();
 
-                    // === 2. AUTO-CONVERT TYPES (FIX FOR ARGUMENT MISMATCH) ===
                     if (value != null) {
                         Class<?> expectedType = method.getParameterTypes()[0];
 
-                        // Case A: Number Mismatches (Integer vs Long vs Double)
                         if (Number.class.isAssignableFrom(value.getClass())) {
                             Number num = (Number) value;
                             if (expectedType == Long.class || expectedType == long.class) {
@@ -225,7 +166,6 @@ public class AbstractDAO<T> {
                             }
                         }
 
-                        // Case B: Date Mismatches (SQL Timestamp -> LocalDateTime)
                         if (expectedType == java.time.LocalDateTime.class && value instanceof java.sql.Timestamp) {
                             value = ((java.sql.Timestamp) value).toLocalDateTime();
                         }
@@ -233,15 +173,13 @@ public class AbstractDAO<T> {
                             value = ((java.sql.Date) value).toLocalDate();
                         }
                     }
-                    // ========================================================
 
                     method.invoke(instance, value);
                 }
-                // === END MODIFIED LOOP ===
 
                 list.add(instance);
             }
-        } catch (Exception e) { // Simplified catch block
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
@@ -324,33 +262,15 @@ public class AbstractDAO<T> {
         List<String> fieldNames = new ArrayList<>();
         List<Object> fieldValues = new ArrayList<>();
 
-//        for (Field field : type.getDeclaredFields()) {
-//            field.setAccessible(true);
-//            try {
-//                Object value = field.get(t);
-//                if (value != null) {
-//                    fieldNames.add(field.getName());
-//                    fieldValues.add(value);
-//                }
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         for (Field field : type.getDeclaredFields()) {
             field.setAccessible(true);
 
-            // === FIX: Ignore static/final fields (like serialVersionUID) ===
-//            if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
-//                    java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
-//                continue;
-//            }
             if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
                     java.lang.reflect.Modifier.isFinal(field.getModifiers()) ||
-                    field.getName().endsWith("Cached")) { // <--- ADD THIS LINE
+                    field.getName().endsWith("Cached")) {
                 continue;
             }
-            // ==============================================================
 
             try {
                 Object value = field.get(t);
@@ -405,78 +325,7 @@ public class AbstractDAO<T> {
      * @return the updated object
      * @throws RuntimeException if an error occurs during update
      */
-//    public T update(T t) {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-//        List<String> fieldNames = new ArrayList<>();
-//        List<Object> fieldValues = new ArrayList<>();
-//        Object idValue = null;
-//
-////        for (Field field : type.getDeclaredFields()) {
-////            field.setAccessible(true);
-////            try {
-////                Object value = field.get(t);
-////                if ("id".equalsIgnoreCase(field.getName())) {
-////                    idValue = value;
-////                } else {
-////                    fieldNames.add(field.getName());
-////                    fieldValues.add(value);
-////                }
-////            } catch (IllegalAccessException e) {
-////                e.printStackTrace();
-////            }
-////        }
-//
-//        for (Field field : type.getDeclaredFields()) {
-//            field.setAccessible(true);
-//
-//            // === FIX: Ignore static/final fields (like serialVersionUID) ===
-//            if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
-//                    java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
-//                continue;
-//            }
-//            // ==============================================================
-//
-//            try {
-//                Object value = field.get(t);
-//                if ("id".equalsIgnoreCase(field.getName())) {
-//                    idValue = value;
-//                } else {
-//                    fieldNames.add(field.getName());
-//                    fieldValues.add(value);
-//                }
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        String query = createUpdateQuery(fieldNames, "id");
-//
-//        try {
-//            connection = ConnectionFactory.getConnection();
-//            statement = connection.prepareStatement(query);
-//
-//            for (int i = 0; i < fieldValues.size(); i++) {
-//                statement.setObject(i + 1, fieldValues.get(i));
-//            }
-//            statement.setObject(fieldValues.size() + 1, idValue);
-//
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            if (e.getMessage().contains("Duplicate entry")) {
-//                LOGGER.log(Level.WARNING, "Duplicate entry error: " + e.getMessage());
-//                 throw new RuntimeException("Error updating " + type.getSimpleName() + ": " + e.getMessage(), e);
-//            } else {
-//                LOGGER.log(Level.WARNING, type.getName() + "DAO:update " + e.getMessage());
-//            }
-//        } finally {
-//            ConnectionFactory.close(statement);
-//            ConnectionFactory.close(connection);
-//        }
-//
-//        return t;
-//    }
+
     public T update(T t) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -488,11 +337,7 @@ public class AbstractDAO<T> {
         for (Field field : type.getDeclaredFields()) {
             field.setAccessible(true);
 
-            // 1. IGNORE STATIC FIELDS (Fixes serialVersionUID crash)
-//            if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
-//                    java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
-//                continue;
-//            }
+
             if (java.lang.reflect.Modifier.isStatic(field.getModifiers()) ||
                     java.lang.reflect.Modifier.isFinal(field.getModifiers()) ||
                     field.getName().endsWith("Cached")) { // <--- ADD THIS LINE
@@ -505,9 +350,7 @@ public class AbstractDAO<T> {
                 if ("id".equalsIgnoreCase(field.getName())) {
                     idValue = value;
                 } else {
-                    // === THE FIX IS HERE ===
-                    // Only add the field to the query if the value is NOT null.
-                    // This prevents overwriting existing data with nulls.
+
                     if (value != null) {
                         fieldNames.add(field.getName());
                         fieldValues.add(value);
@@ -518,7 +361,6 @@ public class AbstractDAO<T> {
             }
         }
 
-        // Safety check: If there are no fields to update, stop.
         if (fieldNames.isEmpty()) {
             return t;
         }
@@ -532,7 +374,6 @@ public class AbstractDAO<T> {
             for (int i = 0; i < fieldValues.size(); i++) {
                 statement.setObject(i + 1, fieldValues.get(i));
             }
-            // Set ID as the last parameter
             statement.setObject(fieldValues.size() + 1, idValue);
 
             statement.executeUpdate();

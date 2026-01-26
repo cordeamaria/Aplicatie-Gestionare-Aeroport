@@ -14,10 +14,6 @@ public class Bilet implements Serializable {
     private LocalDateTime data_cumparare;
     private String status_plata;
 
-
-
-    // Optional: Add a field to store the code if the server sends it
-//    private String codZborCached;
     private String codZborCached;
 
     public Bilet() {}
@@ -58,13 +54,11 @@ public class Bilet implements Serializable {
     public String getStatus_plata() { return status_plata; }
     public void setStatus_plata(String status_plata) { this.status_plata = status_plata; }
 
-    // === THE FIX IS HERE ===
-    // We removed the call to 'repository.ZborRepository'
     public String getCodZbor() {
         if (codZborCached != null) {
             return codZborCached;
         }
-        return "ID: " + id_zbor; // Return ID as fallback since we can't check DB here
+        return "ID: " + id_zbor;
     }
 
     public void setCodZbor(String code) {

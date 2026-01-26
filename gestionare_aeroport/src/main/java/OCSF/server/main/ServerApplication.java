@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class ServerApplication {
 
-    private static final int PORT = 3000; // Must match the client's port
+    private static final int PORT = 3000;
 
     public static void main(String[] args) {
         AirportServer server = new AirportServer(PORT);

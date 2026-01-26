@@ -9,7 +9,7 @@
             prefHeight="650" prefWidth="1100">
 
     <left>
-        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #f0f0f0;">
+        <VBox spacing="10" prefWidth="200" style="-fx-background-color: #FFF;">
             <padding>
                 <Insets top="10" left="10" bottom="10" right="10"/>
             </padding>
