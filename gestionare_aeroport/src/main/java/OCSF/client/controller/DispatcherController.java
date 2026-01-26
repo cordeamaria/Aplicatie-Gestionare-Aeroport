@@ -21,7 +21,7 @@ public class DispatcherController implements UserAware {
     @FXML private Label userNameLabel, userRoleLabel;
 
     // Search Fields
-    @FXML private TextField searchFlightField, searchAirField;
+    @FXML private TextField searchFlightField;
 
     // Flight Table
     @FXML private TableView<Zbor> flightTable;
@@ -32,8 +32,8 @@ public class DispatcherController implements UserAware {
     // Flight Inputs
     @FXML private TextField fCodeF, fDepF, fDestF, fEquipmentF, fCrewF, fPaxF;
     @FXML private ComboBox<String> fStatusCombo;
-    @FXML private DatePicker datePicker;       // Added for Departure Date
-    @FXML private DatePicker arrivalDatePicker; // Added for Arrival Date
+    @FXML private DatePicker datePicker;
+    @FXML private DatePicker arrivalDatePicker;
 
 
     // Crew Table
@@ -58,7 +58,6 @@ public class DispatcherController implements UserAware {
         setupColumns();
 
         fStatusCombo.getItems().addAll("programat", "imbarcare", "decolat", "in_cursa", "aterizat", "anulat");
-       // airStatusCombo.getItems().addAll("activ", "in_mentenanta", "retras");
         roleFilterCombo.getItems().addAll("Pasager", "Muncitor", "Dispecer", "Administrator", "Pilot", "Stewardesa");
 
         // Flight Selection Listener
@@ -105,7 +104,7 @@ public class DispatcherController implements UserAware {
         userRoleLabel.setText(user.getRol());
     }
 
-    // --- NAVIGATION ---
+    // NAVIGATION
     @FXML public void showFlightsPane() {
         hideAll(); flightsPane.setVisible(true); flightsPane.setManaged(true);
         refreshFlights();
@@ -125,7 +124,7 @@ public class DispatcherController implements UserAware {
 
     @FXML public void showReportPane() { hideAll(); reportPane.setVisible(true); reportPane.setManaged(true); }
 
-    // --- FLIGHT OPERATIONS ---
+    //  FLIGHT OPERATIONS
 
     @FXML public void handleAddFlight() {
         try {
@@ -189,16 +188,9 @@ public class DispatcherController implements UserAware {
         if(arrivalDatePicker != null) arrivalDatePicker.setValue(null);
     }
 
-    // --- AIRCRAFT OPERATIONS (ADDED) ---
 
 
-
-
-
-
-
-
-    // --- USER FILTER (ADDED) ---
+    //  USER FILTER
 
     @FXML public void handleFilterUsers() {
         List<User> list = (List<User>) AirportClient.getInstance().sendRequest("GET_ALL_USERS", null);
@@ -213,8 +205,6 @@ public class DispatcherController implements UserAware {
             }
         }
     }
-
-    // --- OTHER ACTIONS ---
 
     @FXML public void handleAddCrewAssignment() {
         try {
@@ -236,7 +226,6 @@ public class DispatcherController implements UserAware {
         }
     }
 
-    // --- HELPERS ---
 
     private void refreshFlights() {
         List<Zbor> list = (List<Zbor>) AirportClient.getInstance().sendRequest("GET_ALL_FLIGHTS", null);

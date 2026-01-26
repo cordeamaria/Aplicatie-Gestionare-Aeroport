@@ -8,7 +8,7 @@ public class User implements Serializable {
     private Integer id;
     private String username;
     private String parola;
-    private String rol; // Pasager, Muncitor, Dispecer, Administrator, Pilot, Stewardesa, Manager
+    private String rol;
 
     public User() {}
 

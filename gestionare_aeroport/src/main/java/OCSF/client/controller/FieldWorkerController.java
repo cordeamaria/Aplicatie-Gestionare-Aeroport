@@ -89,10 +89,9 @@ public class FieldWorkerController implements UserAware {
         userRoleLabel.setText(user.getRol());
     }
 
-    // --- NAVIGATION ---
+    // NAVIGATION
     @FXML public void showTasksPane() {
         hideAllPanels(); tasksPane.setVisible(true); tasksPane.setManaged(true);
-        // Request tasks by User ID
         List<Task> list = (List<Task>) AirportClient.getInstance().sendRequest("GET_MY_TASKS", loggedUser.getId());
         if(list != null) tasksTable.setItems(FXCollections.observableArrayList(list));
     }
@@ -115,7 +114,7 @@ public class FieldWorkerController implements UserAware {
         if(list != null) issuesTable.setItems(FXCollections.observableArrayList(list));
     }
 
-    // --- ACTIONS ---
+    //  ACTIONS
     @FXML
     public void handleUpdateIssueStatus() {
         Problema selected = issuesTable.getSelectionModel().getSelectedItem();

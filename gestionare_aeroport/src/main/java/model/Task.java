@@ -8,7 +8,7 @@ public class Task implements Serializable {
     private Integer id;
     private Long id_muncitor;
     private String descriere;
-    private String status; // in_asteptare, in_desfasurare, completat, anulat
+    private String status;
     private LocalDateTime data_alocare;
     private LocalDateTime data_finalizare;
 

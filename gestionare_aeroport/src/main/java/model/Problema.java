@@ -9,7 +9,7 @@ public class Problema implements Serializable {
     private Integer id;
     private Long id_user_reporter;
     private String descriere;
-    private String status; // noua, in_analiza, rezolvata, inchisa
+    private String status;
     private LocalDateTime data_raportare;
     private LocalDateTime data_rezolvare;
 

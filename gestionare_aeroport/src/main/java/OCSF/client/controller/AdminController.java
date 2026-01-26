@@ -1,6 +1,6 @@
 package OCSF.client.controller;
 
-import OCSF.client.networking.AirportClient; // Make sure this import is correct for your project
+import OCSF.client.networking.AirportClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -71,11 +71,9 @@ public class AdminController implements UserAware {
         userRoleLabel.setText(user.getRol());
     }
 
-    // --- NAVIGARE + NETWORK CALLS ---
 
     @FXML public void showUserManagement() {
         hideAll(); userPane.setVisible(true); userPane.setManaged(true);
-        // FIX: Request data from Server
         List<User> users = (List<User>) AirportClient.getInstance().sendRequest("GET_ALL_USERS", null);
         if (users != null) userTable.setItems(FXCollections.observableArrayList(users));
     }
@@ -87,25 +85,14 @@ public class AdminController implements UserAware {
         if (planes != null) fleetTable.setItems(FXCollections.observableArrayList(planes));
     }
 
-    //@FXML public void showStatistics() { hideAll(); statsPane.setVisible(true); statsPane.setManaged(true); }
 
-    // --- CRUD PERSONAL ---
+    // CRUD PERSONAL
     @FXML public void handleAddUser() {
         User u = new User(0, usernameField.getText(), passwordField.getText(), roleCombo.getValue());
         AirportClient.getInstance().sendRequest("ADD_USER", u);
         showUserManagement(); // Refresh table
     }
 
-//    @FXML public void handleUpdateUser() {
-//        User selected = userTable.getSelectionModel().getSelectedItem();
-//        if (selected != null) {
-//            selected.setUsername(usernameField.getText());
-//            selected.setParola(passwordField.getText());
-//            selected.setRol(roleCombo.getValue());
-//            AirportClient.getInstance().sendRequest("UPDATE_USER", selected);
-//            showUserManagement();
-//        }
-//    }
 
     @FXML
     public void handleUpdateUser() {
@@ -148,7 +135,7 @@ public class AdminController implements UserAware {
         }
     }
 
-    // --- CRUD FLOTĂ ---
+    // CRUD FLOTĂ
     @FXML public void handleAddAircraft() {
         try {
             Aeronava a = new Aeronava(0, airCodeF.getText(), airModelF.getText(), Integer.parseInt(airCapF.getText()), airStatusCombo.getValue(), airLocF.getText());
@@ -157,7 +144,6 @@ public class AdminController implements UserAware {
         } catch (Exception e) { System.out.println("Eroare date numerice"); }
     }
 
-    // ... Implement handleUpdateAircraft and handleDeleteAircraft similarly using "UPDATE_PLANE" and "DELETE_PLANE"
 
     private void hideAll() {
         userPane.setVisible(false); userPane.setManaged(false);
@@ -166,7 +152,6 @@ public class AdminController implements UserAware {
         userInfoPane.setVisible(false);
     }
 
-    // --- CRUD FLOTĂ (UPDATE & DELETE) ---
 
     @FXML
     public void handleUpdateAircraft() {
@@ -175,12 +160,22 @@ public class AdminController implements UserAware {
         if (selected != null) {
             try {
                 // Update the object with data from text fields
+                if(!airCodeF.getText().isEmpty()){
                 selected.setCod_aeronava(airCodeF.getText());
+                }
+                if(!airModelF.getText().isEmpty()){
                 selected.setModel(airModelF.getText());
+                }
                 // Parse integer safely
+                if(!airCapF.getText().isEmpty()){
                 selected.setCapacitate(Integer.parseInt(airCapF.getText()));
+                }
+                if(airStatusCombo.getValue() != null){
                 selected.setStare_operationala(airStatusCombo.getValue());
+                }
+                if(!airLocF.getText().isEmpty()){
                 selected.setLocatie_curenta(airLocF.getText());
+                }
 
                 // SEND REQUEST TO SERVER
                 AirportClient.getInstance().sendRequest("UPDATE_PLANE", selected);
@@ -237,20 +232,15 @@ public class AdminController implements UserAware {
 
     @FXML
     public void handleSearchAir() {
-        // 1. Get the text the user typed
         String filter = searchAirField.getText().toLowerCase();
 
-        // 2. Request the FULL list from the server (so we search everything, not just what's visible)
-        // Note: In a real app with millions of records, you'd send the query to the server ("SEARCH_PLANE", filter).
-        // For this project size, fetching all and filtering locally is fine.
+
         List<Aeronava> allPlanes = (List<Aeronava>) AirportClient.getInstance().sendRequest("GET_ALL_PLANES", null);
 
         if (allPlanes != null) {
-            // 3. Filter the list
             ObservableList<Aeronava> filteredList = FXCollections.observableArrayList(allPlanes)
                     .filtered(a -> a.getCod_aeronava().toLowerCase().contains(filter));
 
-            // 4. Update the table
             fleetTable.setItems(filteredList);
         }
     }
@@ -267,7 +257,7 @@ public class AdminController implements UserAware {
         }
     }
 
-    // ================= STATISTICS & PDF GENERATION =================
+    // STATISTICS & PDF GENERATION
 
     @FXML
     public void handleGeneratePDF() {
@@ -307,7 +297,7 @@ public class AdminController implements UserAware {
             document.add(new Paragraph("Data Raportului: " + date.toString()));
             document.add(new Paragraph("\n")); // Empty line
 
-            // Create Table (2 Columns)
+            // Create Table
             float[] columnWidths = {200F, 200F};
             Table table = new Table(columnWidths);
 

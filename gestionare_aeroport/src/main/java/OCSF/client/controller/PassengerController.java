@@ -77,7 +77,7 @@ public class PassengerController implements UserAware {
         userRoleLabel.setText(user.getRol());
     }
 
-    // ================= PANELS =================
+    // PANELS
     @FXML public void showSearchFlightPane() {
         hideAllPanels();
         searchFlightPane.setVisible(true);
@@ -98,7 +98,7 @@ public class PassengerController implements UserAware {
         populateMyLuggageTable();
     }
 
-    // ================= OPERATIONS =================
+    //  OPERATIONS
     @FXML
     public void showAllFlights() {
         List<Zbor> flights = (List<Zbor>) AirportClient.getInstance().sendRequest("GET_ALL_FLIGHTS", null);
@@ -169,7 +169,7 @@ public class PassengerController implements UserAware {
     }
 
     private void populateMyLuggageTable() {
-        // Request luggage by User ID (Server handles logic)
+        // Request luggage by User ID
         List<Bagaj> bags = (List<Bagaj>) AirportClient.getInstance().sendRequest("GET_MY_BAGGAGE", loggedUser.getId());
         if (bags != null) myLuggageTable.setItems(FXCollections.observableArrayList(bags));
     }

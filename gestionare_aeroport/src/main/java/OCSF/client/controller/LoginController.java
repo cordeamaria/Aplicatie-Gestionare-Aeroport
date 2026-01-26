@@ -39,7 +39,7 @@ public class LoginController {
         flightTable.setItems(null);
     }
 
-    // ================= LOGARE =================
+    //  LOGARE
     @FXML
     public void handleLogin(ActionEvent event) throws IOException {
         String user = usernameField.getText().trim();
@@ -73,7 +73,6 @@ public class LoginController {
                 case "ADMINISTRATOR":
                     SceneSwitcher.changeScene(event, "AdminView.fxml", "Meniu Administrator", validatedUser);
                     break;
-                // Add Pilot/Stewardess if you have views for them
                 default:
                     showAlert("Eroare", "Rol necunoscut sau neimplementat: " + role);
             }
@@ -82,7 +81,7 @@ public class LoginController {
         }
     }
 
-    // ================= VEZI ZBORURI =================
+    // VEZI ZBORURI
     @FXML
     public void handleViewFlights() {
         // REQUEST: GET_ALL_FLIGHTS
